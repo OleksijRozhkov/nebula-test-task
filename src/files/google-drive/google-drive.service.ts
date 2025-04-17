@@ -1,21 +1,16 @@
-import * as fs from 'fs';
 import * as path from 'path';
 import { Readable } from 'stream';
 
-import { Injectable, type OnModuleInit } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { google } from 'googleapis';
 import { drive_v3 } from 'googleapis/build/src/apis/drive/v3';
 
 @Injectable()
-export class GoogleDriveService implements OnModuleInit {
+export class GoogleDriveService {
   private driveClient: drive_v3.Drive;
 
   constructor(private readonly configService: ConfigService) {}
-
-  public async onModuleInit() {
-    await this.setupDriveClient();
-  }
 
   private async setupDriveClient() {
     try {
@@ -36,42 +31,15 @@ export class GoogleDriveService implements OnModuleInit {
     }
   }
 
-  public async uploadFile(
-    filePath: string,
-    fileName: string,
-  ): Promise<{ id: string; webViewLink: string }> {
-    try {
-      const fileMetadata = {
-        name: fileName,
-        parents: [this.configService.get<string>('GOOGLE_DRIVE_FOLDER_ID')],
-      };
-
-      const media = {
-        mimeType: this.getMimeType(fileName),
-        body: fs.createReadStream(filePath),
-      };
-
-      const response = await this.driveClient.files.create({
-        requestBody: fileMetadata,
-        media: media,
-        fields: 'id, webViewLink',
-      });
-
-      return {
-        id: response.data.id,
-        webViewLink: response.data.webViewLink,
-      };
-    } catch (error) {
-      console.error('Error uploading file to Google Drive:', error);
-      throw error;
-    }
-  }
-
   public async uploadFileStream(
     stream: Readable,
     fileName: string,
   ): Promise<{ id: string; webViewLink: string }> {
     try {
+      if (!this.driveClient) {
+        await this.setupDriveClient();
+      }
+
       const fileMetadata = {
         name: fileName,
         parents: [this.configService.get<string>('GOOGLE_DRIVE_FOLDER_ID')],

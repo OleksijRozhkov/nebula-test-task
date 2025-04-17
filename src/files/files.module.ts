@@ -3,12 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { File } from './entities/file.entity';
 import { FilesController } from './files.controller';
-import { FilesService } from './files.service';
 import { FilesRepository } from './files.repository';
-import { GoogleDriveModule } from '../google-drive/google-drive.module';
+import { FilesService } from './files.service';
+import { FilesWorkersModule } from './workers/files-workers.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([File]), GoogleDriveModule],
+  imports: [TypeOrmModule.forFeature([File]), FilesWorkersModule],
   controllers: [FilesController],
   providers: [FilesService, FilesRepository],
   exports: [FilesService],

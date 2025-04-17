@@ -4,7 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { File } from './files/entities/file.entity';
 import { FilesModule } from './files/files.module';
-import { GoogleDriveModule } from './google-drive/google-drive.module';
 
 @Module({
   imports: [
@@ -31,7 +30,6 @@ import { GoogleDriveModule } from './google-drive/google-drive.module';
 
     // Application modules
     FilesModule,
-    GoogleDriveModule,
   ],
 })
 export class AppModule {}

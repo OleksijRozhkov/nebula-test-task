@@ -1,7 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsUrl, ArrayMinSize, ArrayMaxSize } from 'class-validator';
 
-export class UploadFilesDto {
+import { File } from '../entities/file.entity';
+
+export class UploadFilesRequestDto {
   @ApiProperty({
     description: 'Array of file URLs to upload',
     type: [String],
@@ -16,4 +18,32 @@ export class UploadFilesDto {
     message: 'Maximum of 100 file URLs per request allowed',
   })
   public fileUrls: string[];
+}
+
+export class FailedUploadDto {
+  @ApiProperty({
+    description: 'URL of the file that failed to upload',
+    type: String,
+  })
+  public url: string;
+
+  @ApiProperty({
+    description: 'Error message from the failed upload',
+    type: String,
+  })
+  public error: string;
+}
+
+export class UploadFilesResponseDto {
+  @ApiProperty({
+    description: 'List of successfully uploaded files',
+    type: [File],
+  })
+  public successfulUploads: File[];
+
+  @ApiProperty({
+    description: 'List of failed uploads with error messages',
+    type: [FailedUploadDto],
+  })
+  public failedUploads: FailedUploadDto[];
 }

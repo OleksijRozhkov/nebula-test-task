@@ -1,7 +1,12 @@
 import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 
-import { UploadFilesDto, FindFilesRequestDto, FindFilesResponseDto } from './dto';
+import {
+  UploadFilesRequestDto,
+  FindFilesRequestDto,
+  FindFilesResponseDto,
+  UploadFilesResponseDto,
+} from './dto';
 import { File } from './entities';
 import { FilesService } from './files.service';
 
@@ -19,13 +24,9 @@ export class FilesController {
   })
   @ApiResponse({ status: 400, description: 'Bad request' })
   public async uploadFiles(
-    @Body() uploadFilesDto: UploadFilesDto,
-  ): Promise<{ message: string; uploadedFiles: File[] }> {
-    const uploadedFiles = await this.filesService.uploadFiles(uploadFilesDto);
-    return {
-      message: 'Files uploaded successfully',
-      uploadedFiles,
-    };
+    @Body() uploadFilesDto: UploadFilesRequestDto,
+  ): Promise<UploadFilesResponseDto> {
+    return await this.filesService.uploadFiles(uploadFilesDto);
   }
 
   @Get()

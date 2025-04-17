@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, Min } from 'class-validator';
 import { Type } from 'class-transformer';
+import { IsNumber, IsOptional, Min } from 'class-validator';
+
 import { File } from '../entities';
 
 export class FindFilesRequestDto {
