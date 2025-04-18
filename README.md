@@ -13,8 +13,8 @@ A NestJS application for uploading files to Google Drive with PostgreSQL databas
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
-   cd <repository-name>
+   git clone https://github.com/OleksijRozhkov/nebula-test-task
+   cd nebula-test-task
    ```
 
 2. **Environment Setup**
